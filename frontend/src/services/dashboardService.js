@@ -1,0 +1,10 @@
+import API from './api';
+export const getDashboardStats = () => API.get('/dashboard/stats');
+export const getBranchDistribution = () => API.get('/dashboard/branch-distribution');
+export const getResultPerformance = () => API.get('/dashboard/result-performance');
+export const getSemesterPerformance = () => API.get('/dashboard/semester-performance');
+export const getUpcomingExams = () => API.get('/dashboard/upcoming-exams');
+export const getMarksPostingStatus = () => API.get('/dashboard/marks-posting-status');
+export const getRecentActivity = () => API.get('/dashboard/recent-activity');
+export const getNotifications = () => API.get('/dashboard/notifications');
+export const getDashboardTopPerformers = () => API.get('/dashboard/top-performers');
