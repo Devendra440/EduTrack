@@ -36,23 +36,23 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<PrivateRoute><AppLayout /></PrivateRoute>}>
-              <Route index element={<Navigate to="/dashboard" />} />
-              <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route element={<PrivateRoute><AppLayout /></PrivateRoute>}>
+              <Route path="/dashboard" element={<DashboardPage />} />
               
-              <Route path="students" element={<RoleRoute allowedRoles={['CREDENTIAL_MANAGER', 'TEACHER']}><StudentsPage /></RoleRoute>} />
-              <Route path="students/:id" element={<RoleRoute allowedRoles={['CREDENTIAL_MANAGER', 'TEACHER']}><StudentProfilePage /></RoleRoute>} />
+              <Route path="/students" element={<RoleRoute allowedRoles={['CREDENTIAL_MANAGER', 'TEACHER']}><StudentsPage /></RoleRoute>} />
+              <Route path="/students/:id" element={<RoleRoute allowedRoles={['CREDENTIAL_MANAGER', 'TEACHER']}><StudentProfilePage /></RoleRoute>} />
               
-              <Route path="subjects" element={<RoleRoute allowedRoles={['TEACHER', 'STUDENT']}><SubjectsPage /></RoleRoute>} />
-              <Route path="schedules" element={<RoleRoute allowedRoles={['TEACHER', 'STUDENT']}><SchedulesPage /></RoleRoute>} />
+              <Route path="/subjects" element={<RoleRoute allowedRoles={['TEACHER', 'STUDENT']}><SubjectsPage /></RoleRoute>} />
+              <Route path="/schedules" element={<RoleRoute allowedRoles={['TEACHER', 'STUDENT']}><SchedulesPage /></RoleRoute>} />
               
-              <Route path="marks" element={<RoleRoute allowedRoles={['TEACHER']}><MarksPage /></RoleRoute>} />
+              <Route path="/marks" element={<RoleRoute allowedRoles={['TEACHER']}><MarksPage /></RoleRoute>} />
               
-              <Route path="results" element={<RoleRoute allowedRoles={['TEACHER', 'STUDENT']}><ResultsPage /></RoleRoute>} />
-              <Route path="results/history" element={<RoleRoute allowedRoles={['TEACHER', 'STUDENT']}><ResultHistoryPage /></RoleRoute>} />
-              <Route path="performance" element={<RoleRoute allowedRoles={['TEACHER', 'STUDENT']}><PerformancePage /></RoleRoute>} />
+              <Route path="/results" element={<RoleRoute allowedRoles={['TEACHER', 'STUDENT']}><ResultsPage /></RoleRoute>} />
+              <Route path="/results/history" element={<RoleRoute allowedRoles={['TEACHER', 'STUDENT']}><ResultHistoryPage /></RoleRoute>} />
+              <Route path="/performance" element={<RoleRoute allowedRoles={['TEACHER', 'STUDENT']}><PerformancePage /></RoleRoute>} />
               
-              <Route path="credentials" element={<RoleRoute allowedRoles={['CREDENTIAL_MANAGER']}><CredentialsPage /></RoleRoute>} />
+              <Route path="/credentials" element={<RoleRoute allowedRoles={['CREDENTIAL_MANAGER']}><CredentialsPage /></RoleRoute>} />
             </Route>
           </Routes>
         </BrowserRouter>

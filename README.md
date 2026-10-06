@@ -59,9 +59,38 @@ To access the administrative dashboard, use the following sample credentials:
 - Netlify (Global CDN Frontend Hosting)
 - Render (Backend Web Service Hosting)
 
-**Quality Assurance:**
-- Selenium WebDriver 4
-- TestNG Framework
+---
+
+## 🏗️ System Architecture
+
+EduTrack is designed using a decoupled client-server architecture:
+
+1. **Presentation Layer (React Frontend):**
+   - Developed using Vite for rapid HMR and optimized builds.
+   - Hosted on **Netlify**, leveraging its global CDN edge nodes for instantaneous delivery.
+   - Uses `react-router-dom` for client-side routing, protected by RBAC wrappers.
+   - Communicates with the backend asynchronously using `axios`.
+
+2. **Application Layer (Spring Boot Backend):**
+   - Developed using Java 17 and Spring Boot 3.2.
+   - Follows the Controller-Service-Repository pattern for clean separation of concerns.
+   - Hosted on **Render** (Docker containerized) as a stateless Web Service.
+   - Includes custom global exception handling and DTO projections.
+
+3. **Data Layer (MongoDB Atlas):**
+   - Cloud-native NoSQL document database.
+   - Ensures flexible schema design for rapid feature iterations.
+   - Secured via IP whitelisting and robust authentication parameters.
+
+---
+
+## ☁️ Deployment Pipeline
+
+This repository is configured with a modern CI/CD approach:
+
+- **Frontend CI/CD:** Connected to Netlify. A `_redirects` file is utilized in the build output to route all traffic to `index.html`, preventing 404 errors during client-side navigation. Any push to the `main` branch automatically triggers a new Netlify production build.
+- **Backend CI/CD:** Connected to Render. Utilizing a multi-stage `Dockerfile`, Render automatically pulls the latest commit, builds the `.jar` using Maven, and deploys it on an Alpine JRE container.
+- **Security:** Secrets like `MONGO_URI` are injected directly into the cloud hosting environments as protected environment variables, completely omitted from the repository.
 
 ---
 
@@ -99,18 +128,6 @@ npm install
 npm run dev
 ```
 *The frontend application will be served at `http://localhost:5173`.*
-
----
-
-## 🧪 Automated Testing
-
-Selenium UI tests are configured to verify core application workflows (Login, Student Addition, Result Calculations). 
-
-Ensure both the local frontend and backend servers are running, then execute:
-```bash
-cd selenium-tests
-mvn test
-```
 
 ---
 
