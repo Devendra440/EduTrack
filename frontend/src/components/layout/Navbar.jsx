@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FiBell, FiLogOut, FiSearch, FiMenu, FiUser, FiShield } from 'react-icons/fi';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getNotifications } from '../../services/dashboardService';
+import { supabase } from '../../services/supabaseClient';
 
 export default function Navbar({ toggle }) {
   const navigate = useNavigate();
@@ -14,7 +15,8 @@ export default function Navbar({ toggle }) {
     getNotifications().then(res => setNotifications(res.data)).catch(() => {});
   }, []);
 
-  const logout = () => {
+  const logout = async () => {
+    await supabase.auth.signOut();
     localStorage.removeItem('edutrack_auth');
     localStorage.removeItem('edutrack_user');
     navigate('/login');

@@ -4,6 +4,7 @@ import { useToast } from '../components/common/Toast';
 import EduTrackLogo from '../components/common/EduTrackLogo';
 import { loginUser, requestForgotPassword } from '../services/userService';
 import { FiBook, FiUsers, FiBarChart2, FiAward, FiKey, FiLock, FiMail, FiCheckCircle, FiHelpCircle } from 'react-icons/fi';
+import { supabase } from '../services/supabaseClient';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -17,6 +18,17 @@ export default function LoginPage() {
 
   const navigate = useNavigate();
   const { showToast } = useToast();
+
+  const handleGoogleLogin = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+      if (error) throw error;
+    } catch (error) {
+      showToast(error.message || 'Error signing in with Google', 'error');
+    }
+  };
 
   const handleRoleSelect = (roleEmail, rolePass) => {
     setEmail(roleEmail);
@@ -255,6 +267,22 @@ export default function LoginPage() {
               style={{ width: '100%', padding: '11px', fontSize: 15, marginTop: 8, justifyContent: 'center' }}
             >
               {loading ? 'Signing in...' : 'Sign In'}
+            </button>
+            
+            <div style={{ display: 'flex', alignItems: 'center', margin: '20px 0' }}>
+              <div style={{ flex: 1, height: 1, background: 'var(--border)' }}></div>
+              <div style={{ padding: '0 10px', fontSize: 12, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Or continue with</div>
+              <div style={{ flex: 1, height: 1, background: 'var(--border)' }}></div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="btn btn-secondary"
+              style={{ width: '100%', padding: '11px', fontSize: 14, justifyContent: 'center', display: 'flex', alignItems: 'center', gap: 8, background: 'white', color: '#333', border: '1px solid #ccc' }}
+            >
+              <img src="https://www.google.com/favicon.ico" alt="Google" width="18" height="18" />
+              Sign in with Google
             </button>
           </form>
 

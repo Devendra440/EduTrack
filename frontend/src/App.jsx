@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import AppLayout from './components/layout/AppLayout';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
@@ -13,6 +14,7 @@ import PerformancePage from './pages/PerformancePage';
 import CredentialsPage from './pages/CredentialsPage';
 import { ToastProvider } from './components/common/Toast';
 import ServerWakingLoader from './components/common/ServerWakingLoader';
+import { supabase } from './services/supabaseClient';
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('edutrack_auth');
@@ -30,6 +32,41 @@ const RoleRoute = ({ children, allowedRoles }) => {
 };
 
 function App() {
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      if (session) {
+        localStorage.setItem('edutrack_auth', session.access_token);
+        localStorage.setItem('edutrack_user', JSON.stringify({
+          email: session.user.email,
+          fullName: session.user.user_metadata?.full_name || 'Google User',
+          role: 'ADMIN' // Defaulting to ADMIN for demo purposes
+        }));
+      }
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      if (session) {
+        localStorage.setItem('edutrack_auth', session.access_token);
+        localStorage.setItem('edutrack_user', JSON.stringify({
+          email: session.user.email,
+          fullName: session.user.user_metadata?.full_name || 'Google User',
+          role: 'ADMIN'
+        }));
+      } else {
+        localStorage.removeItem('edutrack_auth');
+        localStorage.removeItem('edutrack_user');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   return (
     <ServerWakingLoader>
       <ToastProvider>
