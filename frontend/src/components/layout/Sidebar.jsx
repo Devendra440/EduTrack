@@ -39,7 +39,7 @@ const navGroups = [
   }
 ];
 
-export default function Sidebar({ open }) {
+export default function Sidebar({ open, setOpen, isMobile }) {
   const { pathname } = useLocation();
   const user = JSON.parse(localStorage.getItem('edutrack_user') || '{}');
   const role = user.role || '';
@@ -79,14 +79,28 @@ export default function Sidebar({ open }) {
 
   const filteredNavGroups = getFilteredGroups();
 
+  const handleItemClick = () => {
+    if (isMobile && setOpen) {
+      setOpen(false);
+    }
+  };
+
   return (
     <div
       className="sidebar no-print"
       style={{
-        width: open ? 'var(--sidebar-width)' : '0',
-        flexShrink: 0,
-        transition: 'width 0.25s ease',
+        width: isMobile ? '250px' : (open ? 'var(--sidebar-width)' : '0px'),
+        background: '#0f172a',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        position: isMobile ? 'fixed' : 'relative',
+        left: isMobile ? (open ? 0 : '-250px') : 0,
+        top: 0,
+        zIndex: 1000,
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         overflow: 'hidden',
+        boxShadow: isMobile && open ? '0 0 20px rgba(0,0,0,0.5)' : 'none'
       }}
     >
       {/* Brand Header with Custom Logo */}
@@ -103,6 +117,7 @@ export default function Sidebar({ open }) {
               <Link
                 key={item.path}
                 to={item.path}
+                onClick={handleItemClick}
                 className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
               >
                 <span className="sidebar-item-icon">{item.icon}</span>
