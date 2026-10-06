@@ -1,3 +1,10 @@
+## ?? Live Demo
+
+**Frontend (Netlify):** https://edutrack-frontend-app.netlify.app
+**Backend (Render API):** https://edutrack-backend-cu91.onrender.com/api/dashboard/ping
+
+> *Note: The backend is hosted on Render's free tier and may take ~30-50 seconds to wake up from sleep. The frontend features a Smart Glassmorphism Loading UI to mask this cold start.*
+
 # 🎓 EduTrack — Student Academic & Result Management System
 
 ![EduTrack Banner](https://via.placeholder.com/1200x300/1e40af/ffffff?text=EduTrack+%E2%80%94+Student+Academic+%26+Result+Management+System)
@@ -548,3 +555,4 @@ This project is created for academic and interview demonstration purposes.
 ---
 
 *Built with ❤️ using Java, Spring Boot, MongoDB, and React.js*
+
